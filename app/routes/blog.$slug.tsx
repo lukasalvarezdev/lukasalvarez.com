@@ -11,7 +11,7 @@ import { ArrowBack } from '~/utils/icons';
 import { RootLoaderType } from '~/root';
 
 export async function getMdxPage(slug?: string) {
-	const filePath = path.join(process.cwd(), 'output', 'static', 'content', `${slug}.mdx`);
+	const filePath = path.join(process.cwd(), 'static', 'content', `${slug}.mdx`);
 	const fileContent = await fs.readFile(filePath, 'utf-8');
 
 	return fileContent;
