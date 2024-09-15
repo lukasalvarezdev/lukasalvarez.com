@@ -1,6 +1,7 @@
 import { vitePlugin as remix } from '@remix-run/dev';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
 	server: { port: 3000 },
@@ -13,5 +14,8 @@ export default defineConfig({
 			},
 		}),
 		tsconfigPaths(),
+		viteStaticCopy({
+			targets: [{ src: 'app/content/*.mdx', dest: '.' }],
+		}),
 	],
 });

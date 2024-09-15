@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
-import fs from 'fs/promises';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
 import { getMDXComponent } from 'mdx-bundler/client';
 import { bundleMDX } from 'mdx-bundler';
 import { rehypePrettyCode } from 'rehype-pretty-code';
@@ -11,11 +8,18 @@ import { formatDate, getGenericSocialImage, getSocialMetas } from '~/utils/misc'
 import { ArrowBack } from '~/utils/icons';
 import { RootLoaderType } from '~/root';
 
+export async function getMdxPage(slug: string) {
+	const post = postContentsBySlug[slug];
+	if (!post) throw new Error('Post not found');
+	return post;
+}
+
 export async function loader({ params }: LoaderFunctionArgs) {
-	const __dirname = dirname(fileURLToPath(import.meta.url));
 	const { slug } = params;
-	const filePath = path.join(__dirname, `../content/${slug}.mdx`);
-	const fileContent = await fs.readFile(filePath, 'utf-8');
+
+	if (!slug) throw new Error('No slug provided');
+
+	const fileContent = await getMdxPage(slug);
 
 	const { code, frontmatter } = await bundleMDX({
 		source: fileContent,
@@ -128,3 +132,19 @@ function removeTrailingSlash(s: string) {
 function getUrl(requestInfo?: { origin: string; path: string }) {
 	return removeTrailingSlash(`${getOrigin(requestInfo)}${requestInfo?.path ?? ''}`);
 }
+
+const postContentsBySlug = Object.fromEntries(
+	Object.entries(
+		import.meta.glob('../content/*.mdx', {
+			query: '?raw',
+			import: 'default',
+			eager: true,
+		}),
+	).map(([filePath, contents]) => {
+		if (typeof contents !== 'string') {
+			throw new Error(`Expected ${filePath} to be a string, but got ${typeof contents}`);
+		}
+
+		return [filePath.replace('../content/', '').replace(/\.mdx$/, ''), contents];
+	}),
+);
