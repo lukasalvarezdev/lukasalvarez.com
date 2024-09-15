@@ -15,7 +15,7 @@ export default defineConfig({
 		}),
 		tsconfigPaths(),
 		viteStaticCopy({
-			targets: [{ src: 'app/content/*.mdx', dest: 'content' }],
+			targets: [{ src: 'app/content/*.mdx', dest: '.' }],
 		}),
 	],
 });
