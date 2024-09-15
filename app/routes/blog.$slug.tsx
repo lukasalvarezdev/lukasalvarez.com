@@ -2,8 +2,7 @@ import * as React from 'react';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
 import fs from 'fs/promises';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import path from 'path';
 import { getMDXComponent } from 'mdx-bundler/client';
 import { bundleMDX } from 'mdx-bundler';
 import { rehypePrettyCode } from 'rehype-pretty-code';
@@ -12,9 +11,9 @@ import { ArrowBack } from '~/utils/icons';
 import { RootLoaderType } from '~/root';
 
 export async function loader({ params }: LoaderFunctionArgs) {
-	const __dirname = dirname(fileURLToPath(import.meta.url));
+	const __dirname = process.cwd();
 	const { slug } = params;
-	const filePath = path.join(__dirname, `../client/content/${slug}.mdx`);
+	const filePath = path.join(__dirname, `./client/content/${slug}.mdx`);
 	const fileContent = await fs.readFile(filePath, 'utf-8');
 
 	const { code, frontmatter } = await bundleMDX({
