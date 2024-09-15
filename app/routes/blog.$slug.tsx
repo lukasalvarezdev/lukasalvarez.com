@@ -9,6 +9,8 @@ import { ArrowBack } from '~/utils/icons';
 import { RootLoaderType } from '~/root';
 
 export async function getMdxPage(slug?: string) {
+	console.log(postContentsBySlug);
+
 	const post = postContentsBySlug[slug!];
 	if (!post) {
 		throw new Error('Post not found');
