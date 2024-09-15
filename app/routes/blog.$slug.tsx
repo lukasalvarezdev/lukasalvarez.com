@@ -10,14 +10,17 @@ import { formatDate, getGenericSocialImage, getSocialMetas } from '~/utils/misc'
 import { ArrowBack } from '~/utils/icons';
 import { RootLoaderType } from '~/root';
 
+export async function getMdxPage(slug?: string) {
+	const filePath = path.join(process.cwd(), 'content', `${slug}.mdx`);
+	const fileContent = await fs.readFile(filePath, 'utf-8');
+
+	return fileContent;
+}
+
 export async function loader({ params }: LoaderFunctionArgs) {
-	const __dirname = process.cwd();
 	const { slug } = params;
 
-	console.log(__dirname, 'HEY');
-
-	const filePath = path.join(__dirname, `./public/content/${slug}.mdx`);
-	const fileContent = await fs.readFile(filePath, 'utf-8');
+	const fileContent = await getMdxPage(slug);
 
 	const { code, frontmatter } = await bundleMDX({
 		source: fileContent,
