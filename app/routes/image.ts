@@ -1,9 +1,9 @@
 export async function loader() {
-	await readFile();
+	console.log(readFile());
 	return { hi: 'World' };
 }
 
-async function readFile() {
+function readFile() {
 	return Object.fromEntries(
 		Object.entries(
 			import.meta.glob('../content/*.mdx', {
