@@ -14,7 +14,7 @@ import { RootLoaderType } from '~/root';
 export async function loader({ params }: LoaderFunctionArgs) {
 	const __dirname = dirname(fileURLToPath(import.meta.url));
 	const { slug } = params;
-	const filePath = path.join(__dirname, `./content/${slug}.mdx`);
+	const filePath = path.join(__dirname, `../client/content/${slug}.mdx`);
 	const fileContent = await fs.readFile(filePath, 'utf-8');
 
 	const { code, frontmatter } = await bundleMDX({
