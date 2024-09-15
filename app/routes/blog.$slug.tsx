@@ -8,18 +8,16 @@ import { formatDate, getGenericSocialImage, getSocialMetas } from '~/utils/misc'
 import { ArrowBack } from '~/utils/icons';
 import { RootLoaderType } from '~/root';
 
-export async function getMdxPage(slug?: string) {
-	console.log(postContentsBySlug);
-
-	const post = postContentsBySlug[slug!];
-	if (!post) {
-		throw new Error('Post not found');
-	}
+export async function getMdxPage(slug: string) {
+	const post = postContentsBySlug[slug];
+	if (!post) throw new Error('Post not found');
 	return post;
 }
 
 export async function loader({ params }: LoaderFunctionArgs) {
 	const { slug } = params;
+
+	if (!slug) throw new Error('No slug provided');
 
 	const fileContent = await getMdxPage(slug);
 
@@ -147,6 +145,6 @@ const postContentsBySlug = Object.fromEntries(
 			throw new Error(`Expected ${filePath} to be a string, but got ${typeof contents}`);
 		}
 
-		return [filePath.replace('../content/', '').replace(/\.md$/, ''), contents];
+		return [filePath.replace('../content/', '').replace(/\.mdx$/, ''), contents];
 	}),
 );
