@@ -5,7 +5,7 @@ export default function Component() {
 	return (
 		<div>
 			<Header />
-			<div className="mx-auto w-[85%] max-w-2xl mdx mt-8">
+			<div className="mx-auto w-[85%] mt-8">
 				<Outlet />
 			</div>
 		</div>
