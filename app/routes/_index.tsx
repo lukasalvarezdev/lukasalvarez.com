@@ -1,7 +1,8 @@
 import type { MetaFunction } from '@remix-run/node';
 import { Link } from '@remix-run/react';
+import { Footer } from '~/utils/footer';
 import { Header } from '~/utils/header';
-import { cn } from '~/utils/misc';
+import { cn, contactUrl } from '~/utils/misc';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -30,7 +31,7 @@ export default function Index() {
 						</h1>
 						<div className="flex flex-col gap-4">
 							<Link
-								to="#contact"
+								to={contactUrl}
 								className={cn(
 									'py-3 px-6 dark:bg-white text-[color:var(--bg-primary)] bg-[color:var(--text-primary)]',
 									'rounded-full font-medium max-w-max text-base',
@@ -44,6 +45,7 @@ export default function Index() {
 									'py-3 px-6 rounded-full font-medium max-w-max text-base',
 									'text-primary border border-gray-200 dark:border-gray-100',
 								)}
+								prefetch="render"
 							>
 								Read the blog
 							</Link>
@@ -58,6 +60,7 @@ export default function Index() {
 					</div>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 }

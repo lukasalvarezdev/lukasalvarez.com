@@ -71,3 +71,5 @@ export function getDomainUrl(request: Request) {
 	const protocol = host.includes('localhost') ? 'http' : 'https';
 	return `${protocol}://${host}`;
 }
+
+export const contactUrl = 'mailto:lukasalvarezdev@gmail.com';
