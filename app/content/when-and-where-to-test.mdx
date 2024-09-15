@@ -1,0 +1,115 @@
+---
+title: When and where to test
+date: 2024-09-13
+description: Pragmatic tips on when and where to write tests
+meta:
+  keywords:
+    - software
+    - engineering
+    - react
+bannerUrl: https://res.cloudinary.com/dmfhqqv3t/image/upload/v1726426253/brady-bellini-HDD-Ua12gO4-unsplash_1_hoikns.jpg
+bannerCredit: Photo by [Brady Bellini](https://unsplash.com/@brady_bellini)
+---
+
+Writing tests is a fundamental practice in modern software development, but it's easy to fall
+into the trap of over-testing. Striking the right balance between test coverage and code
+maintenance is crucial. This post will guide you on when and where to write tests effectively,
+ensuring they serve their primary purpose: to give you confidence at deploy time.
+
+### The Purpose of Writing Tests
+
+The main goal of writing tests is to ensure that your code works as expected and to catch
+potential issues before they reach production. Tests should provide confidence that your
+application behaves correctly, especially in critical paths or areas prone to changes. Remember,
+writing tests is not about pleasing management or achieving high coverage percentages—it's about
+maintaining software quality and reliability.
+
+### When to Write Tests
+
+- **Critical Code Paths:** Write tests for code that is central to your application's
+  functionality. If this code fails, it will significantly impact users.
+
+- **Frequently Changing Code:** Areas of your application that are frequently modified are good
+  candidates for testing. Tests will help ensure that changes do not introduce new bugs.
+
+- **Complex Logic:** If a function or module has complex logic, write tests to cover different
+  scenarios. This will help ensure that edge cases are handled correctly.
+
+- **Bug Fixes:** Whenever you fix a bug, add a test that would have caught the bug. This
+  prevents the issue from resurfacing in the future.
+
+### Where to Write Tests
+
+1.  **Unit Tests:** Especially useful for functions with complex logic and multiple branches.
+    Unit tests are ideal if your code is designed to be easily testable (see this blog post for
+    more on writing testable code). They provide high confidence in the correctness of your
+    logic. However, they won't catch issues related to how different parts of your application
+    interact. For that, you'll need integration tests.
+
+        ```ts showLineNumbers
+        function calculateDiscountedPrice(price: number, discount: number): number {
+        	return price - price * (discount / 100);
+        }
+
+        test('should calculate discounted price correctly', () => {
+        	expect(calculateDiscountedPrice(100, 10)).toBe(90);
+        	expect(calculateDiscountedPrice(200, 25)).toBe(150);
+        });
+        ```
+
+2.  **Integration Tests:** These tests strike a good balance between being not too specific in
+    implementation and still being lighter than end-to-end tests. Write integration tests for
+    parts of the app or components used in multiple places or by different users. This approach
+    helps ensure that edge cases are handled and that your code is not misused.
+
+        ```ts showLineNumbers
+        import { registerUser } from './userService';
+        import { sendConfirmationEmail } from './emailService';
+
+        jest.mock('./emailService'); // Mock email service
+
+        test('should register user and send confirmation email', async () => {
+        	const userData = { name: 'John Doe', email: 'john@example.com' };
+        	await registerUser(userData);
+
+        	// Verify that the confirmation email is sent
+        	expect(sendConfirmationEmail).toHaveBeenCalledWith(userData.email);
+        });
+        ```
+
+3.  **End-to-End Tests:** These provide the highest level of confidence by simulating real user
+    interactions with your application. End-to-end tests should focus on black-box
+    testing—testing the app as a user would, without delving into implementation details. While
+    they offer the most comprehensive coverage, they can be slow, so it's best to use them for
+    testing the happy path.
+
+        ```ts showLineNumbers
+        describe('User login flow', () => {
+        	// Avoid using input names or ids. Only use what is visible to the user
+        	it('should allow users to log in', async () => {
+        		await page.goto('/login');
+        		await page.getByRole('textbox', { name: /email/i }).fill(faker.email());
+        		await page.getByRole('textbox', { name: /password/i }).fill(faker.password());
+        		await page.getByRole('button', { name: /log in/i }).click()
+
+        		await expect(page.getByText('Welcome')).toBeVisible();
+        	});
+        });
+        ```
+
+### Avoid Over-Testing
+
+It's essential to avoid over-testing. Writing too many tests for trivial code or testing
+implementation details can lead to increased maintenance overhead. Focus on tests that provide
+real value and ensure your codebase remains manageable.
+
+### Conclusion
+
+Testing is a critical part of the development process, but it should be done thoughtfully. Write
+tests where they matter most: critical paths, frequently changing code, and complex logic. Avoid
+over-testing to keep your codebase clean and maintainable.
+
+Remember, these guidelines are not hard and fast rules. Over time, you'll develop an internal
+instinct for when and where to write tests based on your project's needs and your experiences.
+The key is to ensure that your tests provide value and give you confidence in your code, without
+becoming a burden.

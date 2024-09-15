@@ -11,7 +11,11 @@ export async function loader() {
 		}),
 	);
 
-	return { posts };
+	return {
+		posts: posts.sort(
+			(a, b) => new Date(b.metadata.rawDate).getTime() - new Date(a.metadata.rawDate).getTime(),
+		),
+	};
 }
 
 export const meta: MetaFunction = () => {

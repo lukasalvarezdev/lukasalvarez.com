@@ -28,10 +28,11 @@ type FrontmatterType = {
 	description: string;
 	bannerCredit: string;
 	bannerUrl: string;
+	rawDate: string;
 	meta: { keywords: string[] };
 };
 
 export function getFrontMatter(frontmatter: Record<string, unknown>): FrontmatterType {
 	const matter = frontmatter as FrontmatterType;
-	return { ...matter, date: formatDate(matter.date) };
+	return { ...matter, date: formatDate(matter.date), rawDate: matter.date };
 }
