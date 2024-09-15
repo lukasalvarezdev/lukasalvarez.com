@@ -4,7 +4,14 @@ import { Header } from '~/utils/header';
 import { cn } from '~/utils/misc';
 
 export const meta: MetaFunction = () => {
-	return [{ title: 'New Remix App' }, { name: 'description', content: 'Welcome to Remix!' }];
+	return [
+		{ title: "Going beyond software: Make something you're truly proud of — Lukas Alvarez" },
+		{
+			name: 'description',
+			content:
+				"Check out my latest insights, experiences, and experiments. It&apos;s not just about writing code—it's about how we think and approach building things.",
+		},
+	];
 };
 
 export default function Index() {

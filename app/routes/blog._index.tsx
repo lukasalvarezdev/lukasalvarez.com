@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from '@remix-run/react';
+import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
 import { bundleMDX } from 'mdx-bundler';
 import { getFrontMatter, postContentsBySlug } from '~/utils/blog.server';
 import { cn } from '~/utils/misc';
@@ -13,6 +13,17 @@ export async function loader() {
 
 	return { posts };
 }
+
+export const meta: MetaFunction = () => {
+	return [
+		{ title: 'Blog: thoughts on code, mindset, and everything in between — Lukas Alvarez' },
+		{
+			name: 'description',
+			content:
+				"Check out my latest insights, experiences, and experiments. It's not just about writing code—it's about how we think and approach building things.",
+		},
+	];
+};
 
 export default function Component() {
 	const { posts } = useLoaderData<typeof loader>();

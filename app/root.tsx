@@ -18,10 +18,7 @@ export const links: LinksFunction = () => [
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	return {
-		requestInfo: {
-			origin: getDomainUrl(request),
-			path: new URL(request.url).pathname,
-		},
+		requestInfo: { origin: getDomainUrl(request), path: new URL(request.url).pathname },
 	};
 }
 export type RootLoaderType = SerializeFrom<typeof loader>;
