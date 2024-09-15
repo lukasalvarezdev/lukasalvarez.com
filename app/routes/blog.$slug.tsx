@@ -16,7 +16,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 	console.log(__dirname, 'HEY');
 
-	const filePath = path.join(__dirname, `../client/content/${slug}.mdx`);
+	const filePath = path.join(__dirname, `./public/content/${slug}.mdx`);
 	const fileContent = await fs.readFile(filePath, 'utf-8');
 
 	const { code, frontmatter } = await bundleMDX({
