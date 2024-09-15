@@ -97,6 +97,14 @@
 		@apply mx-auto my-8 rounded-lg;
 	}
 
+	.mdx ol {
+		@apply list-decimal pl-8;
+	}
+
+	.mdx strong {
+		@apply font-medium;
+	}
+
 	pre {
 		@apply leading-loose mb-8 overflow-x-auto bg-[#f3f3f3] rounded-lg;
 		tab-size: 2;
