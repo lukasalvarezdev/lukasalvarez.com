@@ -10,7 +10,7 @@
 
 	@media (prefers-color-scheme: dark) {
 		:root {
-			--bg-primary: #1a202c;
+			--bg-primary: #181818;
 			--text-primary: #d1d5db;
 		}
 	}
@@ -32,6 +32,10 @@
 
 	.bg-primary {
 		@apply bg-[color:var(--bg-primary)];
+	}
+
+	.border-primary {
+		@apply border-[color:var(--text-primary)];
 	}
 
 	h1,

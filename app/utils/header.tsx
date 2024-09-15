@@ -7,7 +7,8 @@ export function Header() {
 				to="/"
 				className="underlined text-black dark:text-white text-primary underlined block whitespace-nowrap text-xl font-medium transition focus:outline-none"
 			>
-				<h1 className="text-2xl">Lukas Alvarez</h1>
+				<h1 className="text-2xl hidden md:block">Lukas Alvarez</h1>
+				<h1 className="text-2xl md:hidden">Lukas A.</h1>
 			</Link>
 
 			<nav className="text-base">

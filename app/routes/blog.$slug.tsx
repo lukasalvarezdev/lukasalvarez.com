@@ -4,15 +4,10 @@ import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
 import { getMDXComponent } from 'mdx-bundler/client';
 import { bundleMDX } from 'mdx-bundler';
 import { rehypePrettyCode } from 'rehype-pretty-code';
-import { formatDate, getGenericSocialImage, getSocialMetas } from '~/utils/misc';
+import { getSocialMetas } from '~/utils/misc';
 import { ArrowBack } from '~/utils/icons';
 import { RootLoaderType } from '~/root';
-
-export async function getMdxPage(slug: string) {
-	const post = postContentsBySlug[slug];
-	if (!post) throw new Error('Post not found');
-	return post;
-}
+import { getFrontMatter, getMdxPage } from '~/utils/blog.server';
 
 export async function loader({ params }: LoaderFunctionArgs) {
 	const { slug } = params;
@@ -34,12 +29,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 		},
 	});
 
-	return { code, slug, metadata: getFrontMatter() };
-
-	function getFrontMatter(): FrontmatterType {
-		const matter = frontmatter as FrontmatterType;
-		return { ...matter, date: formatDate(matter.date) };
-	}
+	return { code, slug, metadata: getFrontMatter(frontmatter) };
 }
 
 export default function BlogPost() {
@@ -58,7 +48,7 @@ export default function BlogPost() {
 					Back to blog
 				</Link>
 				<h1 className="mb-2 text-black dark:text-white">{metadata.title}</h1>
-				<p className="text-base mb-8">{metadata.date}</p>
+				<p className="text-sm mb-8">{metadata.date}</p>
 			</div>
 
 			<div className="max-w-4xl mx-auto">
@@ -66,6 +56,7 @@ export default function BlogPost() {
 					src={metadata.bannerUrl}
 					alt={metadata.bannerCredit}
 					className="w-full object-cover rounded-lg mb-8"
+					loading="lazy"
 				/>
 			</div>
 
@@ -75,15 +66,6 @@ export default function BlogPost() {
 		</div>
 	);
 }
-
-type FrontmatterType = {
-	title: string;
-	date: string;
-	description: string;
-	bannerCredit: string;
-	bannerUrl: string;
-	meta: { keywords: string[] };
-};
 
 type ExtraMeta = Array<{ [key: string]: string }>;
 type MetaLoader = typeof loader;
@@ -106,11 +88,7 @@ export const meta: MetaFunction<MetaLoader, { root: RootLoaderType }> = ({ data,
 				url,
 				title,
 				description: data.metadata.description,
-				image: getGenericSocialImage({
-					url,
-					words: title,
-					featuredImage: data.metadata.bannerUrl,
-				}),
+				image: data.metadata.bannerUrl,
 			}),
 			...extraMeta,
 		].filter(Boolean);
@@ -132,19 +110,3 @@ function removeTrailingSlash(s: string) {
 function getUrl(requestInfo?: { origin: string; path: string }) {
 	return removeTrailingSlash(`${getOrigin(requestInfo)}${requestInfo?.path ?? ''}`);
 }
-
-const postContentsBySlug = Object.fromEntries(
-	Object.entries(
-		import.meta.glob('../content/*.mdx', {
-			query: '?raw',
-			import: 'default',
-			eager: true,
-		}),
-	).map(([filePath, contents]) => {
-		if (typeof contents !== 'string') {
-			throw new Error(`Expected ${filePath} to be a string, but got ${typeof contents}`);
-		}
-
-		return [filePath.replace('../content/', '').replace(/\.mdx$/, ''), contents];
-	}),
-);

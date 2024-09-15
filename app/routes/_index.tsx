@@ -23,7 +23,7 @@ export default function Index() {
 						</h1>
 						<div className="flex flex-col gap-4">
 							<Link
-								to="/blog"
+								to="#contact"
 								className={cn(
 									'py-3 px-6 dark:bg-white text-[color:var(--bg-primary)] bg-[color:var(--text-primary)]',
 									'rounded-full font-medium max-w-max text-base',
