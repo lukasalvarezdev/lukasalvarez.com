@@ -1,0 +1,204 @@
+---
+meta:
+  - title: Software as an art and engineering - Why we must care for our code like a garden
+  - name: description
+    content: Isn't this awesome?
+headers:
+  Cache-Control: no-cache
+---
+
+# Software as an art and engineering: Why we must care for our code like a garden
+
+Writing software is often compared to art. Just as a sculptor refines details so their creation
+is compelling up close and from afar, your code should be valuable not only to users but also to
+fellow developers, do not be a pain to work with!. However, beyond the artistry, software must
+also be treated as engineering. Much like civil engineers cannot afford mistakes when building a
+bridge due to potential collapse, we must approach software development with the same precision,
+care, and attention to detail—qualities that are frequently overlooked.
+
+### The Importance of Details
+
+In civil engineering, attention to detail can mean the difference between a safe structure and a
+disaster. In software, the consequences might not be as immediate or visible, but over time,
+they add up. A small mistake—a poorly designed function, a hardcoded value, or an overlooked
+edge case—can spiral into larger issues. Often, we move too fast, eager to ship features or hit
+deadlines, and this is where pragmatism plays a key role.
+
+Being pragmatic isn’t about perfection. It’s about knowing when to prioritize speed and when to
+slow down for precision. Sometimes, this means cutting scope. Other times, it means taking a bit
+more time to think through a solution.
+
+### Line Coverage vs Use-Case Coverage
+
+A common mistake is relying solely on line coverage to measure test effectiveness, often a
+requirement from management. To exceed mere compliance and meet your own standards as a
+"craftsman," aim beyond what’s asked. Line coverage shows how many lines of code tests have
+executed but doesn’t guarantee the code handles all real-world scenarios. For example, consider
+a function that manages withdrawals from a bank account:
+
+```ts showLineNumbers
+type Account = { balance: number };
+
+function withdraw(amount: number, account: Account): string {
+	if (amount <= 0) {
+		return 'Invalid withdrawal amount';
+	}
+
+	if (account.balance >= amount) {
+		account.balance -= amount;
+		return 'Withdrawal successful';
+	}
+
+	return 'Insufficient funds';
+}
+```
+
+You might write tests to cover all lines of this function:
+
+```ts showLineNumbers
+describe('withdraw', () => {
+	it('withdraws the correct amount when balance is sufficient', () => {
+		const account: Account = { balance: 100 };
+		const result = withdraw(50, account);
+		expect(result).toBe('Withdrawal successful');
+		expect(account.balance).toBe(50);
+	});
+
+	it('returns error for insufficient funds', () => {
+		const account: Account = { balance: 50 };
+		const result = withdraw(100, account);
+		expect(result).toBe('Insufficient funds');
+		expect(account.balance).toBe(50);
+	});
+
+	it('returns error for invalid withdrawal amount', () => {
+		const account: Account = { balance: 100 };
+		const result = withdraw(-10, account);
+		expect(result).toBe('Invalid withdrawal amount');
+	});
+});
+```
+
+This provides 100% line coverage—now our manager is happy! But our inner craftsman? Not so much.
+Sure, the function is covered, but what about real-world scenarios? For instance, what if the
+withdrawal amount matches the exact balance?
+
+```ts showLineNumbers
+it('allows full balance withdrawal', () => {
+	const account: Account = { balance: 50 };
+	const result = withdraw(50, account);
+	expect(result).toBe('Withdrawal successful');
+	expect(account.balance).toBe(0);
+});
+```
+
+This test passes, but what if there's a floating-point error or an edge case where the balance
+could drop below zero? The coverage might be high, but it doesn’t address all potential issues.
+
+### Improving with Use-Case Coverage
+
+Instead of focusing solely on line coverage, aim for use-case coverage by considering real-world
+scenarios, including edge cases. For instance, let's add a test case for the edge case where a
+withdrawal amount slightly exceeds the balance:
+
+```ts showLineNumbers
+it('prevents the account from going negative', () => {
+	const account: Account = { balance: 50 };
+	const result = withdraw(50.01, account);
+	expect(result).toBe('Insufficient funds');
+	expect(account.balance).toBe(50);
+});
+```
+
+This test ensures that the account never drops below zero, addressing a critical use case that
+wasn't covered by line coverage alone.
+
+### Code Duplication vs. Abstraction
+
+Another area where pragmatism is important is in code duplication and abstraction. It’s easy to
+jump into refactoring code too early, abstracting away functions to make everything look
+“clean.” But sometimes, a little duplication is better than an unnecessary abstraction.
+
+Consider this:
+
+```ts showLineNumbers
+function createUser(email: string) {
+	// Create user logic
+}
+
+function createAdminUser(email: string) {
+	// Create admin-specific logic
+	createUser(email);
+}
+```
+
+At first glance, you might think the createUser function is reusable, but is it? If createUser
+evolves later on, and we make changes specific to general users, it could impact createAdminUser
+in unexpected ways. In cases like this, duplicating some code might actually reduce complexity
+and make your application easier to maintain. Not everything needs to be abstracted.
+
+### Consistency and Tools
+
+One of the biggest lessons I’ve learned is the value of consistency. Code should always look
+clean and organized, but without obsessing over every little thing. The secret here is to use
+tools that enforce consistency for you, like linters, formatters, and CI pipelines. These tools
+eliminate human error in small, tedious tasks and let you focus on what really matters—writing
+great code.
+
+For example, using a linter:
+
+```json showLineNumbers
+{
+	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+	"rules": {
+		"no-unused-vars": "error",
+		"no-console": "warn",
+		"@typescript-eslint/explicit-function-return-type": "off"
+	}
+}
+```
+
+This ensures that code remains tidy and clean without requiring manual enforcement. And by
+automating things like code formatting with Prettier, you never have to worry about minor
+inconsistencies like spacing or semicolons:
+
+```json showLineNumbers
+{
+	"printWidth": 96,
+	"tabWidth": 2,
+	"useTabs": true,
+	"semi": true,
+	"singleQuote": true,
+	"trailingComma": "all",
+	"bracketSpacing": true,
+	"arrowParens": "avoid",
+	"proseWrap": "always"
+}
+```
+
+By setting up these tools early in a project, you save time down the line. Developers won’t have
+to debate formatting rules, and you can focus on more significant architectural decisions.
+
+### The Role of Pragmatism
+
+Ultimately, software engineering is a balance between speed, precision, and pragmatism. Knowing
+when to spend time on details and when to move forward is key. Without pragmatism, you risk
+over-engineering, adding complexity where it’s not needed, and wasting time on issues that won’t
+significantly impact the project.
+
+But being pragmatic doesn’t mean cutting corners. It’s about making informed decisions that fit
+the current needs of the project while keeping an eye on the future. When you focus too much on
+shortcuts, technical debt builds up, and eventually, it can sink your project. On the other
+hand, over-engineering every aspect can slow you down and hinder progress. Pragmatism lies
+somewhere in between.
+
+### Software as a Garden
+
+In the end, software development is like a garden—it requires constant care, attention, and
+pruning. You need to watch it grow, remove weeds, and nourish it with best practices,
+automation, and careful thought. If left unattended, it becomes unmaintainable and chaotic. If
+over-pruned, it becomes fragile. Finding the right balance is an ongoing process.
+
+The code you write should be robust enough to last and flexible enough to evolve. By being
+pragmatic, paying attention to the details, and focusing on consistency, you ensure that your
+code can stand the test of time—just like a well-tended garden.
