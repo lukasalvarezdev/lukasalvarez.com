@@ -15,7 +15,7 @@ export const meta: MetaFunction = () => {
 		{
 			name: 'description',
 			content:
-				"Check out my latest insights, experiences, and experiments. It&apos;s not just about writing code—it's about how we think and approach building things.",
+				"Check out my latest insights, experiences, and experiments. It's not just about writing code—it's about how we think and approach building things.",
 		},
 	];
 };
