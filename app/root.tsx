@@ -2,6 +2,7 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/reac
 import type { LinksFunction, LoaderFunctionArgs, SerializeFrom } from '@remix-run/node';
 import './tailwind.css';
 import { getDomainUrl } from './utils/misc';
+import 'remixicon/fonts/remixicon.css';
 
 export const links: LinksFunction = () => [
 	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },

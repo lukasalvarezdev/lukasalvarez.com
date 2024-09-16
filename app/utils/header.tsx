@@ -1,5 +1,4 @@
 import { Link } from '@remix-run/react';
-import { contactUrl } from './misc';
 
 export function Header() {
 	return (
@@ -20,13 +19,13 @@ export function Header() {
 						</Link>
 					</li>
 					<li className="hidden md:block">
-						<Link to="/#about" className="underlined">
+						<Link to="/#about_me" className="underlined">
 							About
 						</Link>
 					</li>
 					<li>
 						<Link
-							to={contactUrl}
+							to="/#contact"
 							className="py-1.5 px-4 dark:bg-white text-[color:var(--bg-primary)] bg-[color:var(--text-primary)] rounded-full font-medium"
 						>
 							Contact

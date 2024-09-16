@@ -22,7 +22,7 @@ export async function getMdxPage(slug: string) {
 	return post;
 }
 
-type FrontmatterType = {
+export type FrontmatterType = {
 	title: string;
 	date: string;
 	description: string;
