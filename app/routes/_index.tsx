@@ -126,15 +126,30 @@ export default function Index() {
 					<div className="col-span-full lg:col-span-7 row-start-1 lg:col-start-6">
 						<h2 className="mb-8">Hi there, it&apos;s Lukas</h2>
 						<p>
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut qui unde nobis
-							dignissimos, quam adipisci, ex possimus numquam ab officia soluta voluptas
-							accusantium minima tempore assumenda sed facere, quo aliquam. Lorem ipsum dolor
-							sit amet consectetur adipisicing elit. Aut qui unde nobis dignissimos, quam
-							adipisci, ex possimus numquam ab officia soluta voluptas accusantium minima
-							tempore assumenda sed facere, quo aliquam. Lorem ipsum dolor sit amet consectetur
-							adipisicing elit. Aut qui unde nobis dignissimos, quam adipisci, ex possimus
-							numquam ab officia soluta voluptas accusantium minima tempore assumenda sed
-							facere, quo aliquam.
+							I started coding with a simple goal: to build a small e-commerce site. Little did
+							I know, this would spark a deep passion for creating clean, elegant software. For
+							me, aesthetics and attention to detail are as crucial as functionality. I strive
+							to make everything—both the UI and the code—look and feel just right.
+							<br />
+							<br />
+							One of my proudest achievements was developing an ERP startup from scratch. I
+							coded the whole thing myself, but personal challenges with my co-founder
+							eventually led me to step away. Despite the hurdles, that project remains a
+							testament to my skills and dedication.
+							<br />
+							<br />
+							When faced with tough problems, I start by laying them out on paper. I find that
+							planning everything out helps me stay focused and tackle challenges effectively.
+							<br />
+							<br />
+							I&apos;m driven by a desire to make a positive impact—whether that&apos;s helping
+							others grow, improving a project, or just making sure every place and person I
+							encounter is better off than before.
+							<br />
+							<br />
+							Outside of work, I&apos;m passionate about photography (yes, I took that photo of
+							the stars), playing football, and solo travel. These activities keep me grounded
+							and give me a fresh perspective, helping me bring a balanced approach to my work.
 						</p>
 					</div>
 				</div>
@@ -192,8 +207,9 @@ function ContactCard({
 		<a
 			href={to}
 			className={cn(
-				'bg-gray-800 p-6 aspect-square rounded-lg flex flex-col justify-between',
-				'hover:bg-gray-700 group',
+				'bg-[#f3f3f3] dark:bg-[#22272e]',
+				'p-6 aspect-square rounded-lg flex flex-col justify-between',
+				'hover:bg-[#e7e7e7] dark:hover:bg-[#25292f] group',
 			)}
 			target="_blank"
 			rel="noopener noreferrer"
