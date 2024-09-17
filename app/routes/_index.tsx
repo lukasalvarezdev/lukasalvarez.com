@@ -157,7 +157,7 @@ export default function Index() {
 				<section className="pt-16 mb-16" id="contact">
 					<h2 className="text-center mb-8">Contact me</h2>
 
-					<div className="grid lg:grid-cols-3 gap-8">
+					<div className="grid lg:grid-cols-3 gap-6">
 						<ContactCard
 							to="mailto:lukasalvarezdev@gmail.com"
 							title="Email"
