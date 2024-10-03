@@ -93,7 +93,7 @@ export const meta: MetaFunction<MetaLoader, { root: RootLoaderType }> = ({ data,
 			...extraMeta,
 		].filter(Boolean);
 	} else {
-		return [{ title: 'Not found' }, { description: 'You landed on the wrong place buddy' }];
+		return [{ title: 'Not found' }, { description: 'You landed on the wrong place' }];
 	}
 
 	function getRequestInfo() {
