@@ -2,6 +2,7 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/reac
 import type { LinksFunction, LoaderFunctionArgs, SerializeFrom } from '@remix-run/node';
 import './tailwind.css';
 import { getDomainUrl } from './utils/misc';
+import { Analytics } from '@vercel/analytics/react';
 import 'remixicon/fonts/remixicon.css';
 
 export const links: LinksFunction = () => [
@@ -37,6 +38,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				{children}
 				<ScrollRestoration />
 				<Scripts />
+				<Analytics />
 			</body>
 		</html>
 	);
